@@ -1,5 +1,7 @@
 import requests
 import socket
+import schedule
+import time
 
 def get_public_ip():
     # Use a public service to get the public IP address
@@ -12,7 +14,7 @@ def get_public_ip():
         print(f"Error getting public IP: {e}")
         return None
 
-def main():
+def update_public_ip():
     # Set the URL of your Flask server
     server_url = 'https://winterip.pythonanywhere.com/'
 
@@ -37,5 +39,12 @@ def main():
     else:
         print("Unable to retrieve public IP.")
 
-if __name__ == '__main__':
-    main()
+# Schedule the task every 5 minutes
+schedule.every(5).minutes.do(update_public_ip)
+
+while True:
+    # Run the scheduled tasks
+    schedule.run_pending()
+
+    # Sleep for a short interval to avoid high CPU usage
+    time.sleep(1)
