@@ -60,10 +60,15 @@ def check_and_update_ip():
     # Check if there are changes in the repository
     result = run(["git", "diff", "--quiet", "index.html"])
     if result.returncode == 1:
-        # Commit and push changes
+        # Commit changes
         run(["git", "add", "index.html"])
         run(["git", "commit", "-m", "Update public IP"])
-        run(["git", "push", "origin", "master"])
+
+        # Push changes with access token
+        access_token = "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"
+        username = "winteripp"
+        repo_name = "your_repository_name"
+        run(["git", "push", f"https://{access_token}@github.com/{username}/{repo_name}.git", "master"])
         print("Changes committed and pushed to GitHub.")
     else:
         print("No changes detected.")
